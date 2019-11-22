@@ -1,0 +1,52 @@
+{% extends 'base.html.Twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/multiverse/css/main.css') }}" />
+	<link rel="stylesheet" href="{{ asset('assets/nav/css/main.css') }}" />
+	<style>
+	.img-resize{
+		width: 100%;
+		height: 100%;
+	}
+	#wrapper{
+		margin: 0;
+		padding: 0;
+		width: 100%;
+	}
+	.titreCate{
+		color: #fafafa;
+		font-weight: 100;
+	}
+	</style>
+{% endblock %}
+
+{% block body %}
+
+	<div id="main">
+		<article class="thumb">
+			<a class="image effet-zoom" href="#">
+				<img class="img-resize" src="{{ asset('assets/images/categories/logo.png') }}" alt="" />
+			</a>
+			<h2 class="titreCate">Bienvenue</h2>
+		</article>
+		
+		{% for categorie in categories %}
+			<article class="thumb">
+				<a class="image effet-zoom" href="{{ path('souscategories',{"id":categorie.id})}}">
+					<img class="img-resize" src="{{ asset(categorie.image) }}" alt="" />
+				</a>
+				<h2 class="titreCate">{{ categorie.name }}</h2>
+			</article>
+		{% endfor %}
+
+		<article class="thumb">
+			<a class="image effet-zoom" href="#">
+				<img class="img-resize" src="{{ asset('assets/images/categories/avenir.png') }}" alt="" />
+			</a>
+			<h2 class="titreCate">Bientot</h2>
+		</article> 
+</div>
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('assets/multiverse/js/jquery.poptrox.min.js') }}"></script>
+{% endblock %}

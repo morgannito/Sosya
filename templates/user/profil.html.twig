@@ -1,0 +1,114 @@
+{% extends 'base.html.Twig' %}
+
+{% block stylesheets_before %}
+	<link rel="stylesheet" href="{{ asset('assets/identity/css/main.css') }}" />
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('assets/nav/css/main.css') }}" />
+    <style>
+    /* Main */
+
+	#main {
+        flex-grow: 0;
+        width: 25%;
+        margin-top: 3%;
+	}
+
+    /* body */
+
+    body {
+        padding-top: 0;
+		height: 100%;
+		background-color: #ffffff;
+		background-image: url("images/overlay.png"), -moz-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35)), url("../../images/bg.jpg");
+		background-image: url("images/overlay.png"), -webkit-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35)), url("../../images/bg.jpg");
+		background-image: url("images/overlay.png"), -ms-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35)), url("../../images/bg.jpg");
+		background-image: url("images/overlay.png"), linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35)), url("../../images/bg.jpg");
+		background-repeat: repeat,			no-repeat,			no-repeat;
+		background-size: 100px 100px, cover,				cover;
+		background-position: top left,		center center,		bottom center;
+		background-attachment: fixed,			fixed,				fixed;
+	}
+
+		body:after {
+			content: '';
+			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: inherit;
+			opacity: 0;
+			z-index: 1;
+			background-color: #ffffff;
+			background-image: url("images/overlay.png"), -moz-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
+			background-image: url("images/overlay.png"), -webkit-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
+			background-image: url("images/overlay.png"), -ms-linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
+			background-image: url("images/overlay.png"), linear-gradient(60deg, rgba(255, 165, 150, 0.5) 5%, rgba(0, 228, 255, 0.35));
+			background-repeat: repeat,			no-repeat;
+			background-size: 100px 100px, cover;
+			background-position: top left,		center center;
+			-moz-transition: opacity 1.75s ease-out;
+			-webkit-transition: opacity 1.75s ease-out;
+			-ms-transition: opacity 1.75s ease-out;
+			transition: opacity 1.75s ease-out;
+		}
+
+		body.is-preload:after {
+			opacity: 1;
+		}
+
+    /* wrapper */
+    
+    #wrapper{
+        margin-left: 0px;
+        margin-right: 0px;
+        padding-right: 0px;
+        padding-left: 0px;
+        width: 100%;
+        
+    }
+    
+    </style>
+{% endblock %}
+
+{% block body %}
+    <section id="main">
+        <header>
+            <a href="{{ path('civility') }}">
+                <p style="color : #fe2e2e;">Modifier</p>
+            </a>
+            <span class="avatar">
+                <img style="height 122px; witdh: 122px;" src="{{ asset(utilisateur.dataUser.link) }}" alt="" />
+            </span>
+            <h1>{{utilisateur.civility.name}} {{utilisateur.civility.firstName}}</h1>
+            <p>{{utilisateur.civility.description}}</p>
+        </header>
+        <footer>
+            <ul class="icons">
+                {% if utilisateur.dataUser.twitter != null %}
+                    <li>
+                        <a href="https://www.twitter.com/{{utilisateur.dataUser.twitter}}" class="fa-twitter">Twitter</a>
+                    </li>
+                {% endif %}
+                {% if utilisateur.dataUser.instagram != null %}
+                    <li>
+                        <a href="https://www.instagram.com/{{utilisateur.dataUser.instagram}}" class="fa-instagram">Instagram</a>
+                    </li>
+                {% endif %}
+                {% if utilisateur.dataUser.facebook != null %}
+                    <li>
+                        <a href="https://www.facebook.com/{{utilisateur.dataUser.facebook}}" class="fa-facebook">Facebook</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <a href="{{ path('data') }}"><p style="color : #fe2e2e;">Modifier les réseaux / image de profil</p></a>
+        </footer>
+    </section>		
+{% endblock %}	
+
+{% block javascripts %}
+
+{% endblock %}
+                    

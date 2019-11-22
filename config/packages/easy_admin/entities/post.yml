@@ -1,0 +1,33 @@
+easy_admin:
+   entities:
+       Post :
+          disabled_actions: ['new', 'delete']
+          class: App\Entity\Content
+          label: 'Publication'
+          edit:
+              title: 'Editer la publication [N°%%entity_id%%]'
+              fields:
+                  - { type: 'tab' , label: 'Informations utilisateur', icon: 'lock' }
+                  - { property: 'enable', label: 'Activation' }
+              form_options: { validation_groups: ['Profile'] }
+          show:
+              fields:
+                  - { property: 'title', label: 'Titre' }
+                  - { property: 'text', label: "Texte" }
+                  - { property: 'createAt', label: 'Crée le', format: 'j/n/Y' }
+                  - { property: 'imgContent', label: 'Image' }
+                #   - { property: 'imgContent', label: 'Image 2', type: 'image'}
+                  - { property: 'user', label: 'Utilisateur' }
+                  - { property: 'reports', label: 'Signalé' }
+                  - { property: 'enable', label: 'Activation' }
+              actions:
+          list:
+              sort: ['id', 'DESC']
+              title: "Liste des %%entity_label%%"
+              fields:
+                  - { property: 'enable', label: 'Activation' }
+                  - { property: 'createAt', label: 'Crée le' }
+                  - { property: 'user.username', label: 'Utilisateur' }
+                  - { property: 'title', label: 'Titre' }
+          search:
+            fields: ['createAt','user.username', 'title', 'enable']

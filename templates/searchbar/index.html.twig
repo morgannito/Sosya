@@ -1,0 +1,66 @@
+
+{% extends 'base.html.Twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('assets/nav/css/main.css') }}"/>
+<style>
+.resize{
+    margin: 0;
+    padding: 0;
+}
+.content-text{
+    text-align: center;
+    margin: 10px;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div id="wrapper" style="background-color:white!important;">
+
+				<!-- Menu -->
+					
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section>
+                         <article class="post">
+ 
+					<header>			
+                        <div class="title"> <h3>Résultat de la recherche : "{{ key }}" - {{ research | length }} resultat(s)</h3>	</div>
+                    </header>
+                    <div class="row">
+                    
+                        {% for profil in research %}
+                       
+                        <div class="col-2 col-6-medium col-12-small">
+                            <div class="ui link cards">
+                                <a href="{{ path('user_page', {'id': profil.user.id}) }}" class="hvr-float resize" style="border-bottom-width: 0px;">
+                                    <div class="card">
+                                        <div class="image">
+                                            <img src="{{ asset(profil.user.dataUser.link)}}" style="width: 100%; height: 150px;">
+                                        </div>
+                                        <div class="content">
+                                            <div class="header content-text">{{profil.name}} {{profil.firstName}}</div>
+                                        </div>
+                                    </div>
+                                </a> 
+                            </div> 
+                        </div>  
+                         
+        
+                        {% endfor %}
+                </div>
+            </section>
+
+
+			</div>
+</article>
+
+</div>
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

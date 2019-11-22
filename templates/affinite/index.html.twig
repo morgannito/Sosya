@@ -1,0 +1,60 @@
+
+{% extends 'base.html.Twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/industrious/css/main.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets/nav/css/main.css') }}"/>
+    <style>
+        #wrapper{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        .inner{
+            margin-top: 4%;
+        }
+        h1{
+            margin: 0 0 0 0;
+        }
+	</style>
+{% endblock %}
+
+{% block body %}
+
+    {# 
+        
+    <h3 class="name noHeightResize">{{ tested.user.civility.name }}</h3>
+    {{ tested.affinité }}
+    <a href="{{ path('user_page', {'id': tested.user.id}) }}" class="button alt js-act">
+        <div class="colorText remove">
+            <span class="js-data">Voir le profil</span>
+        </div>
+    </a> #}
+	
+
+    <div class="inner">
+        <header class="special">
+            <h2>Affinité</h2>
+            <p>Cette page permet de voir les utilisateurs ayants les mêmes point commun que vous.</p>
+        </header>
+        <div class="highlights">
+
+            {% for tested in userTested %}
+                <section>
+                    <div class="content">
+                        <header>
+                            <img style="height: 100px; width: 100px;" src="{{ asset(tested.user.dataUser.link) }}" alt="" />
+                            <h3>{{ tested.user.civility.name }} {{ tested.user.civility.firstName }}</h3>
+                        </header>
+                        <p>Cette personne à {{ tested.affinité }} point(s) commun(s) avec vous.</p>
+                        <a href="{{ path('user_page', {'id': tested.user.id}) }}" class="button ">Voir le profil</a>
+                    </div>
+                </section>
+			{% endfor %} 
+
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

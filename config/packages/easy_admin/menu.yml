@@ -1,0 +1,14 @@
+easy_admin:
+   design:
+       menu: 
+          #  LINK ICONS : https://fontawesome.com/v4.7.0/icons/
+          - label: "Gestion d'utilisateurs"
+            icon: 'users'
+            children:
+                - { entity: 'User', role: ROLE_SUPER_ADMIN, label: 'Utilisateurs', icon: 'user' }
+          - label: "Gestion des publications"
+            icon: 'camera'
+            children:
+                - { entity: 'Post', label: 'Publication', icon: 'archive' }
+          - { label: 'Raccourcis' }
+          - { label: 'Retour au site', url: '/', rel: 'index', icon: 'undo' }

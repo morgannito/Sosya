@@ -1,0 +1,30 @@
+.h3-hover{ 
+	text-align: center;
+	font-size: 25px;
+}
+.remove{
+	background-color: #e4ffe2;
+}
+.add{
+	background-color: #fafafa;
+}
+.content-aj{
+	padding: 7%;
+	padding-top: 2%;
+}
+.effet-zoom{
+	-webkit-filter: grayscale(0);
+	filter: grayscale(0);
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+	
+}
+.effet-zoom:hover {
+-moz-transform: scale(1.1);
+-webkit-transform: scale(1.1);
+transform: scale(1.1);
+-webkit-filter: grayscale(100%);
+filter: grayscale(100%);
+-webkit-transition: .3s ease-in-out;
+transition: .3s ease-in-out;
+}

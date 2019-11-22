@@ -1,0 +1,9 @@
+easy_admin:
+   entities:
+       ImgContent :
+          disabled_actions: ['new', 'delete', 'edit']
+          class: App\Entity\ImgContent
+          label: 'Publication'
+          show:
+              fields:
+                  - { property: 'img', label: 'Image', type: 'image' }

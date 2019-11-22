@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>So-Sy</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content=""/>
+        <meta name="keywords" content=""/>
+        <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}" />
+        {% block stylesheets_before %}{% endblock %}
+        {# Hover Master #}
+		<link href="{{ asset('assets/hoverMaster/css/hover.css')}}" rel="stylesheet" media="all">
+        {# main style #}
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/main/style.css')}}">
+
+        {% block stylesheets %}
+        {% endblock %}
+    </head>
+    <body class="is-preload"> <!-- Wrapper -->
+        <div id="wrapper">
+            <!-- Header -->
+            <header id="header">
+                <h1>
+                    <a href="{{ path('social') }}">So-Sy</a>
+                </h1>
+                <nav class="links">
+                    <ul>
+                        <li><a href="{{ path('social') }}">Accueil</a></li>
+                        <li><a href="{{ path('user_page_profil') }}">Mon profil</a></li>
+                        <li><a href="{{ path('affinite') }}">Affinité</a></li>
+                        <li><a href="{{ path('categories') }}">Catégories</a></li>
+                        
+                        {% if app.user is not null %}
+                            {% if "ROLE_ADMIN" in app.user.roles %}
+                                <li><a href="/admin">Administration</a></li>
+                            {% endif %}
+                        {% endif %}
+                        {# <li><a href="#" data-toggle="modal" data-target="#exampleModal">Publier</a></li> #}
+                    </ul>
+                </nav>
+                <nav class="main">
+                    <ul>
+                        <li class="search">
+                            <a class="fa-search" href="#search">Search</a>
+                            <form id="search" method="get" style="color: #E1E1E1;" action="{{ path('search') }}">
+                                <input name="word" placeholder="Search" type="text"/>
+                            </form>
+                        </li>
+                        <li class="menu">
+                            <a class="fa-bars" href="#menu">Menu</a>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+            <!-- Menu -->
+            <section id="menu">
+                <!-- Search -->
+                <section>
+                    <form action="#" class="search" method="get">
+                        <input style="color: #E1E1E1;" name="query" placeholder="Search" type="text"/>
+                    </form>
+                </section>
+                <!-- Links -->
+                <section>
+                    <ul class="links">
+                        {% if app.user is not null %}
+                            {% if "ROLE_ADMIN" in app.user.roles %}
+                                <li>
+                                    <a href="/admin">
+                                        <h3>Administration</h3>
+                                        <p>Gestion du site</p>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                        <li>
+                            <a href="{{ path('social') }}">
+                                <h3>Social</h3>
+                                <p>Aller à la page principale</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('civility') }}">
+                                <h3>Catégorie</h3>
+                                <p>Voir les différents loisirs</p>
+                            </a>
+                        </li>
+                        {# <li>
+                            <a href="{{ path('social') }}">
+                                <h3>Paramètre du compte</h3>
+                                <p>Modifier les paramètres de votre compte</p>
+                            </a>
+                        </li> #}
+                        <li>
+                            <a href="{{ path('conditions') }}">
+                                <h3>Conditions générales</h3>
+                                <p>Voir la documentation</p>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+                <!-- Actions -->
+                <section>
+                    <ul class="actions stacked">
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <li>
+                                <a href="{{ path('fos_user_security_logout') }}" class="button large fit">Déconnexion</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ path('fos_user_security_login') }}" class="button large fit">Connexion</a>
+                            </li>
+                        {% endif %}
+						<li style="color: #fafafa;">&copy; So-Sy</li>
+                    </ul>
+                </section>
+            </section>
+            <body>
+                {% block body %}{% endblock %}
+            </body>
+
+
+
+            <!-- Button trigger modal -->
+
+
+           
+            {# template #}
+            <script src="{{ asset('assets/nav/js/jquery.min.js') }}"></script>
+            <script src="{{ asset('assets/nav/js/browser.min.js') }}"></script>
+            <script src="{{ asset('assets/nav/js/breakpoints.min.js') }}"></script>
+            <script src="{{ asset('assets/nav/js/util.js') }}"></script>
+            <script src="{{ asset('assets/nav/js/main.js') }}"></script>
+            <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+            {% block javascripts %}{% endblock %}
+</html>

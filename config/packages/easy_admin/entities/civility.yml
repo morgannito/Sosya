@@ -1,0 +1,21 @@
+easy_admin:
+   entities:
+       Civility :
+          disabled_actions: ['new', 'delete']
+          class: App\Entity\Civility
+          label: 'Utilisateurs'
+          edit:
+              title: 'Editer la civilité (utilisateur [N°%%entity_id%%] )'
+              fields:
+                  - { property: 'name', label: 'Prénom' }
+                  - { property: 'firstName', label: 'Nom' }
+                  - { property: 'description', label: 'Description' }
+                  - { property: 'birth', label: 'Date de naissance' }
+                  - { property: 'sexe', label: 'Genre',type: 'easyadmin_autocomplete', type_options: { class: 'App\Entity\Sexe' }  }
+          show:
+              fields:
+                  - { property: 'name', label: 'Prénom' }
+                  - { property: 'firstName', label: 'Nom' }
+                  - { property: 'description', label: 'Description' }
+                  - { property: 'birth', label: 'Date de naissance' }
+                  - { property: 'sexe.name', label: 'Genre', }

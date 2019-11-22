@@ -1,0 +1,20 @@
+easy_admin:
+   entities:
+       Data :
+          disabled_actions: ['new', 'delete']
+          class: App\Entity\DataUser
+          label: 'Utilisateurs'
+          edit:
+              title: 'Editer la data (utilisateur [N°%%entity_id%%] )'
+              fields:
+                  - { property: 'link', label: 'Image de profil' }
+                  - { property: 'facebook', label: 'Facebook' }
+                  - { property: 'twitter', label: 'Twitter' }
+                  - { property: 'instagram', label: 'Instagram' }
+          show:
+              fields:
+                  - { property: 'link', label: 'Image de profil' }
+                  - { property: 'facebook', label: 'Facebook' }
+                  - { property: 'twitter', label: 'Twitter' }
+                  - { property: 'instagram', label: 'Instagram' }
+                  - { property: 'user', label: 'Utilisateur' }

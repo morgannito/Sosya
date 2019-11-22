@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>So-Sy</title>
+		<meta charset="utf-8" />
+        <link rel="icon" type="image/png" href="{{ asset('assets/images/logo.png') }}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="{{asset('assets/home/css/main.css') }}" />
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header" class="alt">
+				<div class="inner">
+					<a href="{{ path('social') }}"><h1 style="color: #fe2e2e;">So-Sy</h1></a>
+					<p style="color: #fafafa">Un réseau social qui fait site de rencontre !</p>
+				</div>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Banner -->
+					<section id="intro" class="main">
+						<span class="icon fa-diamond major"></span>
+						<h2>A propos</h2>
+						<p>So-Sy est un réseau social, qui de par ses fonctionnalités 
+                        propose aux différents utilisateurs de trouver des personnes ayant 
+                        les mêmes centres d'intérêt. Le site propose une large liste 
+                        catégorie afin d'avoir de vastes options pour vous décrire au 
+                        maximum mais sans trop.                        
+                        Pour pouvoir voir les différentes fonctionnalités veuillez à vous 
+                        inscrire sur notre site So-Sy et faites d'incroyable rencontre !</p>
+						<ul class="actions">
+							<li><a href="{{ path('fos_user_registration_register') }}" class="button big">S'inscrire</a></li>
+						</ul>
+					</section>
+
+				<!-- Items -->
+					<section class="main items">
+						<article class="item">
+							<header>
+								<a href="#"><img src="{{ asset('assets/home/images/love.jpg') }}" alt="" /></a>
+								<h3>Les rencontres</h3>
+							</header>
+							<p>Le site propose différentes catégories dans lesquels il y a 
+                            des activités permettant de trouver d'autre utilisateur de So-Sy
+                            ayant les mêmes centres d'intérêt que vous ! Qu'attendez-vous 
+                            pour vous y mettre vous aussi dès maintenant !</p>
+							<ul class="actions">
+								<li><a href="{{ path('categories') }}" class="button">Voir plus</a></li>
+							</ul>
+						</article>
+						<article class="item">
+							<header>
+								<a href="#"><img src="{{ asset('assets/home/images/social.jpg') }}" alt="" /></a>
+								<h3>Le social</h3>
+							</header>
+							<p>Le site permet également une partie réseau social,
+                             pemmetant de publier, une ou plusieurs photos, écrire 
+                             des publications, ou les deux à la fois !          
+                             Suivez d'utilisateur pour voir les centres d'intérêt ainsi 
+                             que leurs dernières actualités !</p>
+							<ul class="actions">
+								<li><a href="{{ path('social') }}" class="button">Voir plus</a></li>
+							</ul>
+						</article>
+					</section>
+
+				<!-- CTA -->
+					<section id="cta" class="main special">
+						<h2>LET'S GO !</h2>
+						<p>Il ne vous reste plus que à commencer !</p>
+						<ul class="actions">
+							<li><a href="{{ path('social') }}" class="button big">Commencer !</a></li>
+						</ul>
+					</section>
+
+				<!-- Main -->
+				<!--
+					<section id="main" class="main">
+						<header>
+							<h2>Lorem ipsum dolor</h2>
+						</header>
+						<p>Fusce malesuada efficitur venenatis. Pellentesque tempor leo sed massa hendrerit hendrerit. In sed feugiat est, eu congue elit. Ut porta magna vel felis sodales vulputate. Donec faucibus dapibus lacus non ornare. Etiam eget neque id metus gravida tristique ac quis erat. Aenean quis aliquet sem. Ut ut elementum sem. Suspendisse eleifend ut est non dapibus. Nulla porta, neque quis pretium sagittis, tortor lacus elementum metus, in imperdiet ante lorem vitae ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam eget neque id metus gravida tristique ac quis erat. Aenean quis aliquet sem. Ut ut elementum sem. Suspendisse eleifend ut est non dapibus. Nulla porta, neque quis pretium sagittis, tortor lacus elementum metus, in imperdiet ante lorem vitae ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+					</section>
+				-->
+
+				<!-- Footer -->
+					<footer id="footer">
+						<ul class="icons">
+							<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+						</ul>
+						<p class="copyright">&copy; So-Sy Corp</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{{asset('assets/home/js/jquery.min.js') }}"></script>
+			<script src="{{asset('assets/home/js/skel.min.js') }}"></script>
+			<script src="{{asset('assets/home/js/util.js') }}"></script>
+			<script src="{{asset('assets/home/js/main.js') }}"></script>
+
+	</body>
+</html>

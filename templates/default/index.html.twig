@@ -1,0 +1,373 @@
+{% extends 'base.html.Twig' %}
+	{% block stylesheets %}
+	{# bootstrap #}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+		<link rel="stylesheet" href="{{ asset('assets/strata/css/main.css') }}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="{{ asset('assets/nav/css/main.css') }}" />
+		   
+
+<style>  
+/* Dropup Button */
+.dropbtn {
+  color: white;
+  border: none;
+	box-shadow: inset 0 0 0 0 #A1AFA0;
+}
+
+/* The container <div> - needed to position the dropup content */
+.dropup {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropup content (Hidden by Default) */
+.dropup-content {
+  display: none;
+  position: absolute;
+  bottom: 50px;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropup */
+.dropup-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+	text-align: left;
+}
+
+/* Change color of dropup links on hover */
+.dropup-content a:hover {
+	background-color: #ddd
+	}
+
+/* Show the dropup menu on hover */
+.dropup:hover .dropup-content {
+  display: block;
+}
+
+/* Change the background color of the dropup button when the dropup content is shown */
+.modal-body{
+	height:350px;
+	overflow:hidden;
+}
+.modal-body:hover{
+	overflow-y:auto;
+}
+a.button.fit{
+	width: auto;
+	margin-right: 1.875%;
+	margin-left: 1.875%;
+	text-decoration: none;
+	background-color: #fafafa;
+	box-shadow: inset 0 0 0 1px #777777;
+}
+a.button.fit:hover{
+	box-shadow: inset 0 0 0 1px #fe2e2e;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.likeBtn{
+  border-bottom-width: 0px;
+}
+</style>
+		 {% endblock %}
+		 {% block body %}
+		 <div id="main" style="padding-top: 0px">
+				<section id="two">
+						<a data-toggle="modal" data-target="#exampleModal" class="button fit">Following : {{ app.user.followers | length }}</a>
+						<a data-toggle="modal" data-target="#exampleModal2" class="button fit">Followers : {{ app.user.followings | length }}</a>
+						<a data-toggle="modal" data-target="#publierModal" class="button fit">Publier</a>
+						<a href="{{ path('user_page_profil') }}" class="button fit">Vos publications</a>
+
+				</section>
+		
+				<section id="tree">
+	 {% for pub in publications %}
+
+	<article class="post">
+								<header>
+									<div class="title">
+										<h2>
+											<a href="#">{{ pub.title }}</a>
+										</h2>
+									</div>
+									<div class="meta" style="padding:1%;">
+
+								<div class="dropup">
+									<button class="dropbtn">...</button>
+									<div class="dropup-content">
+										<a href="{{ path('reports', {'type': '1','id': pub.id}) }}">Signaler</a>
+									</div>
+								</div>
+
+
+										<time class="published" style="margin-top: 0px;">{{ pub.createAt.date | date('d/m/Y') }}</time>
+										<a href=" {{ path('user_page', {'id': pub.user.id}) }}" class="author">
+											<span class="name">{{ pub.user.civility.name }} {{ pub.user.civility.firstName }}</span>
+											<img src="{{ pub.user.dataUser.link }}" alt="" />
+										</a>
+									</div>
+								</header>
+									{% for img in pub.imgContent %}
+									<a href="#" class="image featured">
+										<img src="{{ asset(img.img) }}" alt=""  />
+									</a>
+								{% endfor %}
+
+								<p>{{ pub.text }}</p>
+								<footer>
+									{# <ul class="actions">
+										<li>
+											<a href="#" class="button big">Continue Reading</a>
+										</li>
+									</ul> #}
+									<ul class="stats">
+										<li>
+											<a href="{{ path('like_this', {'id': pub.id}) }}" class="likeBtn js-like">
+											
+												{% if pub.isLikedByUser(app.user) %}
+												<i class="fas fa-heart"></i>
+												{% else %}
+												<i class="far fa-heart"></i>
+												{% endif %}
+												<span class="js-like-data">
+													{{ pub.likeContents | length }}
+												</span>
+											</a>
+										</li>
+										{# <li><a href="#" class="icon fa-comment">128</a></li> #}
+									</ul>
+								</footer>
+							</article>
+ {% endfor %}
+				</section>
+
+
+			</div>
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					{# <ul class="icons">
+						<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon fa-instagram"><span class="label">Insta</span></a></li>
+					</ul>  #}
+
+					<a href="#" class="image avatar"><img src="{{ asset(app.user.dataUser.link) }}" alt="" /></a>
+					<h1><strong>{{app.user.civility.name}}</strong>  |  {{app.user.civility.firstName}}<br />
+				{{app.user.civility.description}}<br />
+					</h1>
+				</div>
+			</footer>
+	
+
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="margin-top: 13%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Vos abonnements</h5>
+      </div>	
+      <div class="modal-body" style="padding-top: 0;">
+        {% for follow in followings %}
+				<div class="request-details">
+					<div class="row" style="box-shadow: 0 1px 0 0 #cdcdcd ;">
+						<div class="noty-user-img">
+							<img style="padding-top: 25px; width: 100px; height: 125px;" src="{{ asset(follow.following.dataUser.link) }}" alt="">
+						</div>		  		
+						<div class="request-info" style="padding: 7.5%;">
+							<p>{{follow.following.civility.firstName}}  {{follow.following.civility.name}}</p>
+						</div> 
+						<div style="margin-top:8%;margin-left:auto;margin-right:2%;">
+							<a href="{{ path('follow_this', {'id': follow.following.id}) }}" class="button alt js-follow">
+								{% if follow.following.isFollowByUser(app.user) %}
+								{% set data = "Following"  %}
+								{% else %}
+								{% set data = "Follow" %}
+								{% endif %}
+								<div
+								{# Si on a l'activiter alors ça ajoute la balise #}
+								{% if follow.following.isFollowByUser(app.user) %}
+								class="followDiv removeFollow"
+								{% else %}
+								class="followDiv addFollow"
+								{% endif %}> 
+										<span class="js-data">{{ data }}</span>
+								</div>
+						</a>
+						</div>
+					</div> 				
+				</div><!--request-detailse end-->
+				<!-- code here -->
+   			{% endfor %}
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModal2Label" aria-hidden="true">
+  <div class="modal-dialog" role="document"  style="margin-top: 13%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Vos abonnés</h5>
+      </div>
+      <div class="modal-body" style="padding-top: 0;">
+      	{% for follow in followers %}
+				<div class="request-details">
+					<div class="row" style="box-shadow: 0 1px 0 0 #cdcdcd ;">
+					<div class="noty-user-img">
+						<img style="padding-top: 25px; width: 100px; height: 125px;" src="{{ asset(follow.follower.dataUser.link) }}" alt="">
+					</div>		  		
+					<div class="request-info" style="padding: 7.5%;"><h3>{{follow.follower.civility.firstName}}  {{follow.follower.civility.name}}</h3></div>  				
+					<div style="margin-top:8%;margin-left:auto;margin-right:2%;">
+						<a href="{{ path('follow_this', {'id': follow.follower.id}) }}" class="button alt js-follow">
+								{% if follow.follower.isFollowByUser(app.user) %}
+								{% set data = "Following"  %}
+								{% else %}
+								{% set data = "Follow" %}
+								{% endif %}
+								<div
+								{# Si on a l'activiter alors ça ajoute la balise #}
+								{% if follow.follower.isFollowByUser(app.user) %}
+								class="followDiv removeFollow"
+								{% else %}
+								class="followDiv addFollow"
+								{% endif %}> 
+										<span class="js-data">{{ data }}</span>
+								</div>
+						</a>
+					</div>
+				</div><!--request-detailse end-->
+				</div>
+				<!-- code here -->
+   			{% endfor %}
+      </div>
+  
+    </div>
+  </div>
+</div>
+
+ <!-- Modal -->
+<div class="modal fade" id="publierModal" tabindex="-1" role="dialog" aria-labelledby="publierModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document" style="margin-top: 7%;">
+		<div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Créer une publication</h5>
+      </div>
+			<div class="modal-body" style="height: 100%;">
+				<div class="box">
+					<div class="field">
+						{{ form_start(form, {'method': 'post', 'action': path('social'), 'attr': {'class': 'ui form'}}) }}
+						{{ form_widget(form) }}
+					</div>
+
+					<div class="ui checkbox">
+					</div>
+					<div> 
+						<input class="ui button" type="submit" id="_submit" value="Envoyer" />
+					</div>
+					{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+	{# Axios #}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        // fonction de l'evenement
+        function onClickBtnFollow(event){
+            event.preventDefault();
+            // les variables
+            const url = this.href;
+            const btn = this.querySelector('div.followDiv');
+            const span = this.querySelector('span.js-data');
+            // la requete
+            axios.get(url).then(function(response) {
+                if (btn.classList.contains('addFollow')) {
+					span.textContent = "Following";
+                    btn.classList.replace('addFollow', 'removeFollow');
+                } else {
+					span.textContent = "Follow";
+                    btn.classList.replace('removeFollow', 'addFollow'); 
+                } 
+            }).catch(function (error) {
+                if (error.response.status === 403) {
+                    window.alert("Accès refusé !");
+                } else if (error.response.status === 404) {
+                    window.alert("Requête non trouvée !");
+                } else if (error.response.status === 401) {
+                    window.alert("Vous n'êtes pas connecté !");
+                } else {
+                    window.alert("Une erreur s'est produite, réessayez plus tard");
+                }
+            });
+        }
+        // pour chaque a avec la class js-act , boucle les liens
+        document.querySelectorAll('a.js-follow').forEach(function(link){
+            // ajoute l'evenement on click
+            link.addEventListener('click', onClickBtnFollow);
+        })
+
+				function onClickBtnLike(event){
+            event.preventDefault();
+            // les variables
+            const url = this.href;
+            const spanCount = this.querySelector('span.js-like-data');
+						const icone = this.querySelector('i');
+            // la requete
+            axios.get(url).then(function(response) {
+							spanCount.textContent = response.data.likes ;
+							if (icone.classList.contains('fas')) {
+									icone.classList.replace('fas', 'far');
+							} else {
+									icone.classList.replace('far', 'fas'); 
+							} 
+            }).catch(function (error) {
+                if (error.response.status === 403) {
+                    window.alert("Accès refusé !");
+                } else if (error.response.status === 404) {
+                    window.alert("Requête non trouvée !");
+                } else if (error.response.status === 401) {
+                    window.alert("Vous n'êtes pas connecté !");
+                } else {
+                    window.alert("Une erreur s'est produite, réessayez plus tard");
+                }
+            });
+        }
+        // pour chaque a avec la class js-act , boucle les liens
+        document.querySelectorAll('a.js-like').forEach(function(link){
+            // ajoute l'evenement on click
+            link.addEventListener('click', onClickBtnLike);
+        })
+    </script>
+{% endblock %}
