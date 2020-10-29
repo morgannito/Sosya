@@ -1,7 +1,7 @@
 # SoSy
 
 Ce projet est le fruit de mon 2 nd stage de mon BTS SIO réalisé chez krypton66.
-Il a était realisé en collaboration avec Morgann Riu [https://github.com/morgannito] (un autre étudiant du BTS et stagiaire).
+Il a était realisé en collaboration avec AcensJJ [https://github.com/AcensJJ] (un autre étudiant du BTS et stagiaire).
 
 SoSy est un mixe entre un site de réseaux sociaux et de site de rencontres, à l'aide de son système de publication et de son panel 
 d'activité (pratiqué / aimé) à sélectionné, le site propose de solution innovante pour faire le rencontre de d'autres profils nous 
