@@ -7,15 +7,13 @@ use App\Entity\Follow;
 use App\Repository\FollowRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/social/user/page/{id}", name="user_page")
-     */
+    #[Route('/social/user/page/{id}', name: 'user_page')]
     public function index(User $utilisateur, UserInterface $user = null, ObjectManager $manager)
     {   
         // Test si la civilité est config - Add in all controller fnct
@@ -31,9 +29,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/social/user/profil", name="user_page_profil")
-     */
+    #[Route('/social/user/profil', name: 'user_page_profil')]
     public function profil(UserInterface $user, ObjectManager $manager)
     {
         // Test si la civilité est config - Add in all controller fnct
@@ -51,12 +47,12 @@ class UserController extends AbstractController
     /**
      * Gestion des abonnements (follow / unfollow)
      *
-     * @Route("/jquery/follow/{id}", name="follow_this")
      * @param User $utilisateur
      * @param ObjectManager $manager
      * @param UserInterface $user
      * @return Response
      */
+    #[Route('/jquery/follow/{id}', name: 'follow_this')]
     public function follow(User $utilisateur, ObjectManager $manager, UserInterface $user) : Response
     {   
         if($user != $utilisateur) {
@@ -90,9 +86,7 @@ class UserController extends AbstractController
             , 400);
     }
 
-/**
-* @Route("/user/postUser", name="postUser")
-*/
+#[Route('/user/postUser', name: 'postUser')]
 public function postUser(User $utilisateur, UserInterface $user, ObjectManager $manager)
  {
     $civility = $user->getCivility();

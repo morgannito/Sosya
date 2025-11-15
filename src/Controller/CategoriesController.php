@@ -10,15 +10,13 @@ use App\Repository\ActivityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CategoriesController extends AbstractController
 {
-    /**
-     * @Route("/rencontre/categories", name="categories")
-     */
+    #[Route('/rencontre/categories', name: 'categories')]
     public function categories(ObjectManager $manager , Request $request, UserInterFace $user = null)
     {
         // user connecter alors verifier si il a config
@@ -40,9 +38,7 @@ class CategoriesController extends AbstractController
     }
 
 
-    /**
-     * @Route("/rencontre/categories/{id}", name="souscategories")
-     */
+    #[Route('/rencontre/categories/{id}', name: 'souscategories')]
     public function souscategories($id = null ,ObjectManager $manager , Request $request, UserInterface $user = null, ActivityRepository $repo)
     {  
         // user connecter alors verifier si il a config
@@ -66,13 +62,12 @@ class CategoriesController extends AbstractController
     /**
      * Permet d'avoir ou ne plus avoir l'activité
      *
-     * @Route("/jquery/activity/{id}", name="activity_change")
-     * 
      * @param Activity $activity
      * @param ObjectManager $manager
      * @param UserInterface $user
      * @return Response
      */
+    #[Route('/jquery/activity/{id}', name: 'activity_change')]
     public function activity(Activity $activity, ObjectManager $manager, UserInterface $user) : Response
     {
         if($activity->isHobbyByUser($user)) {

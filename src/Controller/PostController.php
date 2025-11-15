@@ -7,7 +7,7 @@ use App\Entity\LikeContent;
 use App\Repository\LikeContentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -16,13 +16,13 @@ class PostController extends AbstractController
     /**
      * Gestion des likes (like / unlike)
      *
-     * @Route("/jquery/like/{id}", name="like_this")
      * @param Content $post
      * @param ObjectManager $manager
      * @param UserInterface $user
      * @param LikeContentRepository $likeRepo
      * @return Response
      */
+    #[Route('/jquery/like/{id}', name: 'like_this')]
     public function like(Content $post, LikeContentRepository $likeRepo, ObjectManager $manager, UserInterface $user) : Response
     {
         if($post->isLikedByUser($user)) {
