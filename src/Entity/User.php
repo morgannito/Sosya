@@ -7,93 +7,61 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
-* @ORM\Entity
-* @ORM\Table(name="fos_user")
-*/
+#[ORM\Entity]
+#[ORM\Table(name: "fos_user")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[ORM\Column(type: "string", length: 180, unique: true)]
     private $email;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[ORM\Column(type: "string", length: 180, unique: true)]
     private $username;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: "json")]
     private $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: "string")]
     private $password;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private $enabled = false;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\DataUser", mappedBy="user", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: "App\Entity\DataUser", mappedBy: "user", cascade: ["persist", "remove"])]
     private $dataUser;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Civility", mappedBy="user", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: "App\Entity\Civility", mappedBy: "user", cascade: ["persist", "remove"])]
     private $civility;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="follower")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Follow", mappedBy: "follower")]
     private $followers;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="following")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Follow", mappedBy: "following")]
     private $followings;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Hobbies", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Hobbies", mappedBy: "user")]
     private $hobbies;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Identify", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Identify", mappedBy: "user")]
     private $identifies;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CommentContent", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\CommentContent", mappedBy: "user")]
     private $commentContents;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Content", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Content", mappedBy: "user")]
     private $contents;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LikeContent", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\LikeContent", mappedBy: "user")]
     private $likeContents;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="reportedBy")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Report", mappedBy: "reportedBy")]
     private $reports;
 
     public function __construct()
@@ -503,7 +471,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;

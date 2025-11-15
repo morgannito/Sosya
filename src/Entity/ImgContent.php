@@ -4,26 +4,18 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ImgContentRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\ImgContentRepository")]
 class ImgContent
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="imgContent")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Content", inversedBy: "imgContent")]
     private $content;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
     private $img;
 
     public function __toString() {

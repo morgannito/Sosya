@@ -6,26 +6,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SexeRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\SexeRepository")]
 class Sexe
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Civility", mappedBy="sexe", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Civility", mappedBy: "sexe", orphanRemoval: true)]
     private $civility;
 
     public function __construct()

@@ -4,26 +4,18 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\HobbiesRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\HobbiesRepository")]
 class Hobbies
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="hobbies")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "hobbies")]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="hobbies")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Activity", inversedBy: "hobbies")]
     private $activity;
 
     public function __toString() {

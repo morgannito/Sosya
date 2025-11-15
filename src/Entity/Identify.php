@@ -4,32 +4,22 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\IdentifyRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\IdentifyRepository")]
 class Identify
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="identify")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Content", inversedBy: "identify")]
     private $content;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="identifies")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "identifies")]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $createAt;
 
     public function getId(): ?int
