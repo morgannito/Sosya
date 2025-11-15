@@ -4,27 +4,27 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture
 {
 
-    private $encoder;
+    private $hasher;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    public function __construct(UserPasswordHasherInterface $hasher)
     {
-        $this->encoder = $encoder;
+        $this->hasher = $hasher;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $admin = new User();
         $admin->setUsername('admin')
               ->setEmail('admin@admin.fr')
               ->setEnabled('1')
               ->setRoles(array('ROLE_ADMIN'));
-        $password = $this->encoder->encodePassword($admin, 'admin');
+        $password = $this->hasher->hashPassword($admin, 'admin');
         $admin->setPassword($password);
         $manager->persist($admin);
 
@@ -32,7 +32,7 @@ class UserFixtures extends Fixture
         $user->setUsername('user')
              ->setEnabled('1')
              ->setEmail('user@user.fr');
-        $password = $this->encoder->encodePassword($user, 'user');
+        $password = $this->hasher->hashPassword($user, 'user');
         $user->setPassword($password);
         $manager->persist($user);
 
@@ -41,7 +41,7 @@ class UserFixtures extends Fixture
              ->setEnabled('1')
              ->setEmail('jj@jj.fr')
              ->setRoles(array('ROLE_ADMIN'));
-        $password = $this->encoder->encodePassword($jj, 'jjtest');
+        $password = $this->hasher->hashPassword($jj, 'jjtest');
         $jj->setPassword($password);
         $manager->persist($jj);
 
@@ -50,7 +50,7 @@ class UserFixtures extends Fixture
              ->setEnabled('1')
              ->setEmail('riu@riu.fr')
              ->setRoles(array('ROLE_ADMIN'));
-        $password = $this->encoder->encodePassword($riu, 'riutest');
+        $password = $this->hasher->hashPassword($riu, 'riutest');
         $riu->setPassword($password);
         $manager->persist($riu);
 
@@ -59,7 +59,7 @@ class UserFixtures extends Fixture
              ->setEnabled('1')
              ->setEmail('antoine@antoine.fr')
              ->setRoles(array('ROLE_ADMIN'));
-        $password = $this->encoder->encodePassword($antoine, 'antoinetest');
+        $password = $this->hasher->hashPassword($antoine, 'antoinetest');
         $antoine->setPassword($password);
         $manager->persist($antoine);
 

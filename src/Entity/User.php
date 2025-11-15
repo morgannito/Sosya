@@ -3,77 +3,71 @@
 namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
-* @ORM\Entity
-* @ORM\Table(name="fos_user")
-*/
-class User extends BaseUser
+#[ORM\Entity]
+#[ORM\Table(name: "fos_user")]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
+    #[ORM\Column(type: "string", length: 180, unique: true)]
+    private $email;
+
+    #[ORM\Column(type: "string", length: 180, unique: true)]
+    private $username;
+
+    #[ORM\Column(type: "json")]
+    private $roles = [];
+
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\DataUser", mappedBy="user", cascade={"persist", "remove"})
+     * @var string The hashed password
      */
+    #[ORM\Column(type: "string")]
+    private $password;
+
+    #[ORM\Column(type: "boolean")]
+    private $enabled = false;
+
+    #[ORM\OneToOne(targetEntity: "App\Entity\DataUser", mappedBy: "user", cascade: ["persist", "remove"])]
     private $dataUser;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Civility", mappedBy="user", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: "App\Entity\Civility", mappedBy: "user", cascade: ["persist", "remove"])]
     private $civility;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="follower")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Follow", mappedBy: "follower")]
     private $followers;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="following")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Follow", mappedBy: "following")]
     private $followings;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Hobbies", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Hobbies", mappedBy: "user")]
     private $hobbies;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Identify", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Identify", mappedBy: "user")]
     private $identifies;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CommentContent", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\CommentContent", mappedBy: "user")]
     private $commentContents;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Content", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Content", mappedBy: "user")]
     private $contents;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LikeContent", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\LikeContent", mappedBy: "user")]
     private $likeContents;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="reportedBy")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Report", mappedBy: "reportedBy")]
     private $reports;
 
     public function __construct()
     {
-        parent::__construct();
-        $this->commons = new ArrayCollection();
+        $this->roles = ['ROLE_USER'];
+        $this->enabled = false;
         $this->followers = new ArrayCollection();
         $this->followings = new ArrayCollection();
         $this->hobbies = new ArrayCollection();
@@ -82,7 +76,6 @@ class User extends BaseUser
         $this->contents = new ArrayCollection();
         $this->likeContents = new ArrayCollection();
         $this->reports = new ArrayCollection();
-        // your own logic
     }
     
     public function getId() {
@@ -383,12 +376,104 @@ class User extends BaseUser
      * @param User $user
      * @return boolean
      */
-    public function isFollowByUser(User $user) : bool 
+    public function isFollowByUser(User $user) : bool
     {
         foreach($this->followings as $follow) {
             if($follow->getFollower() === $user) return true;
-        } 
-        
+        }
+
         return false;
+    }
+
+    // UserInterface methods
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    public function getEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        // Not needed when using the "bcrypt" or "auto" algorithm in security.yaml
+        return null;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }

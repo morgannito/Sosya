@@ -5,15 +5,13 @@ namespace App\Controller;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AffiniteController extends AbstractController
 {
-    /**
-     * @Route("/rencontre", name="affinite")
-     */
+    #[Route('/rencontre', name: 'affinite')]
     public function affinite(UserInterface $user, ObjectManager $manager, Request $reques)
     {
         // Recup les activité de l'utilisateur

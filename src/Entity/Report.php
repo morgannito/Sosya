@@ -4,47 +4,31 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ReportRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\ReportRepository")]
 class Report
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="reports")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "reports")]
+    #[ORM\JoinColumn(nullable: true)]
     private $reportedBy;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CommentContent", inversedBy="reports")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\CommentContent", inversedBy: "reports")]
     private $comment;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="reports")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "reports")]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="reports")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Content", inversedBy: "reports")]
     private $content;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $createAt;
 
-    /**
-     * @ORM\Column(type="string", length=999)
-     */
+    #[ORM\Column(type: "string", length: 999)]
     private $description;
 
     public function getId(): ?int

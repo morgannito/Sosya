@@ -17,15 +17,13 @@ use App\Form\ImgContentType;
 use App\Repository\ContentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/social", name="social")
-     */
+    #[Route('/social', name: 'social')]
     public function social(UserInterface $user, ObjectManager $manager, Request $request)
     {   
         // Test si la civilité est config - Add in all controller fnct
@@ -96,9 +94,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/user/info/civilite", name="civility")
-     */
+    #[Route('/user/info/civilite', name: 'civility')]
     public function civility(UserInterface $user, ObjectManager $manager, Request $request)
     {
         // form
@@ -135,9 +131,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-     /**
-     * @Route("/user/info/data", name="data")
-     */
+    #[Route('/user/info/data', name: 'data')]
     public function data(UserInterface $user, ObjectManager $manager, Request $request)
     {
         // Test si la civilité est config - Add in all controller fnct
@@ -186,9 +180,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/Conditions", name="conditions")
-     */
+    #[Route('/Conditions', name: 'conditions')]
     public function conditions()
     {
         return $this->render('default/conditions.html.twig', [
@@ -196,9 +188,7 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/social/reports/{type}/{id}", name="reports")
-     */
+    #[Route('/social/reports/{type}/{id}', name: 'reports')]
     public function reports(UserInterFace $user = null, ObjectManager $manager, Request $request)
     {
         // Test si la civilité est config - Add in all controller fnct

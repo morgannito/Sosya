@@ -5,15 +5,13 @@ namespace App\Controller;
 use App\Entity\Civility;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SearchbarController extends AbstractController
 {
-    /**
-     * @Route("/search/", name="search")
-     */
+    #[Route('/search/', name: 'search')]
     public function search(Request $request , ObjectManager $manager, UserInterFace $user)
     { 
         // Test si la civilité est config - Add in all controller fnct

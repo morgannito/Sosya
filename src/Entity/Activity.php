@@ -7,36 +7,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ActivityRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\ActivityRepository")]
 class Activity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="activity")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Category", inversedBy: "activity")]
     private $category;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $img;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Hobbies", mappedBy="activity")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Hobbies", mappedBy: "activity")]
     private $hobbies;
 
     public function __construct()

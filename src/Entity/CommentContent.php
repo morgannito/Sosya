@@ -6,42 +6,28 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CommentContentRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\CommentContentRepository")]
 class CommentContent
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="commentContent")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Content", inversedBy: "commentContent")]
     private $content;
 
-    /**
-     * @ORM\Column(type="string", length=999)
-     */
+    #[ORM\Column(type: "string", length: 999)]
     private $comment;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="commentContents")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "commentContents")]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $createAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="comment")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Report", mappedBy: "comment")]
     private $reports;
 
     public function __construct()

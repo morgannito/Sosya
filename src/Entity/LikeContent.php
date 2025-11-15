@@ -4,31 +4,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\LikeContentRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\LikeContentRepository")]
 class LikeContent
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Content", inversedBy="likeContents")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Content", inversedBy: "likeContents")]
     private $content;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="likeContents")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "likeContents")]
     private $user;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $CreateAt;
 
     public function getId(): ?int

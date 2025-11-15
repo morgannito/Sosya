@@ -4,47 +4,31 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CivilityRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\CivilityRepository")]
 class Civility
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=47)
-     */
+    #[ORM\Column(type: "string", length: 47)]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=102)
-     */
+    #[ORM\Column(type: "string", length: 102)]
     private $firstName;
 
-    /**
-     * @ORM\Column(type="string", length=999, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 999, nullable: true)]
     private $description;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="civility", cascade={"persist", "remove"})
-     */
+    #[ORM\OneToOne(targetEntity: "App\Entity\User", inversedBy: "civility", cascade: ["persist", "remove"])]
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Sexe", inversedBy="civility")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Sexe", inversedBy: "civility")]
+    #[ORM\JoinColumn(nullable: false)]
     private $sexe;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $birth;
 
     public function getId(): ?int

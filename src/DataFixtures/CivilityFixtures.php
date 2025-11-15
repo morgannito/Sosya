@@ -4,12 +4,12 @@ namespace App\DataFixtures;
 
 use App\Entity\Civility;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class CivilityFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $homme = $this->getReference('homme');
         $femme = $this->getReference('femme');
@@ -69,7 +69,7 @@ class CivilityFixtures extends Fixture implements DependentFixtureInterface
     }
 
     // Doit charger le(s) fichier(s) avant celui ci, pour avoir les references
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return array(
             UserFixtures::class,

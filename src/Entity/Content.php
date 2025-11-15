@@ -7,67 +7,43 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ContentRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\ContentRepository")]
 class Content
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=999)
-     */
+    #[ORM\Column(type: "string", length: 999)]
     private $text;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $createAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\CommentContent", mappedBy="content")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\CommentContent", mappedBy: "content")]
     private $commentContent;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ImgContent", mappedBy="content")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\ImgContent", mappedBy: "content")]
     private $imgContent;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Identify", mappedBy="content")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Identify", mappedBy: "content")]
     private $identify;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="contents")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "contents")]
+    #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LikeContent", mappedBy="content")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\LikeContent", mappedBy: "content")]
     private $likeContents;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="content")
-     */
+    #[ORM\OneToMany(targetEntity: "App\Entity\Report", mappedBy: "content")]
     private $reports;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private $enable;
 
     public function __construct()

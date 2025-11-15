@@ -4,12 +4,12 @@ namespace App\DataFixtures;
 
 use App\Entity\DataUser;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class DataUserFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $adminDT = new DataUser;
         $admin = $this->getReference('admin');
@@ -60,7 +60,7 @@ class DataUserFixtures extends Fixture implements DependentFixtureInterface
     }
 
     // Doit charger le(s) fichier(s) avant celui ci, pour avoir les references
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return array(
             UserFixtures::class,

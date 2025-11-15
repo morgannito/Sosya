@@ -4,26 +4,18 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\FollowRepository")
- */
+#[ORM\Entity(repositoryClass: "App\Repository\FollowRepository")]
 class Follow
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="followers")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "followers")]
     private $follower;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="followings")
-     */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User", inversedBy: "followings")]
     private $following;
 
     public function getId(): ?int
