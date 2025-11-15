@@ -4,11 +4,11 @@ namespace App\DataFixtures;
 
 use App\Entity\Sexe;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class SexeFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $homme = new Sexe();
         $homme->setName('Homme');

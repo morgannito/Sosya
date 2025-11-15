@@ -4,12 +4,12 @@ namespace App\DataFixtures;
 
 use App\Entity\Activity;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class ArtActivityFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {   
         // art (les 9 arts majeurs)
         $art = $this->getReference('art');
@@ -80,7 +80,7 @@ class ArtActivityFixtures extends Fixture implements DependentFixtureInterface
 
     
     // Doit charger le(s) fichier(s) avant celui ci, pour avoir les references
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return array(
             CategoryFixtures::class,
