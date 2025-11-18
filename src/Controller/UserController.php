@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Follow;
 use App\Repository\FollowRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class UserController extends AbstractController
 {
     #[Route('/social/user/page/{id}', name: 'user_page')]
-    public function index(User $utilisateur, UserInterface $user = null, ObjectManager $manager)
+    public function index(User $utilisateur, UserInterface $user = null, EntityManagerInterface $manager)
     {   
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();
@@ -30,7 +30,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/social/user/profil', name: 'user_page_profil')]
-    public function profil(UserInterface $user, ObjectManager $manager)
+    public function profil(UserInterface $user, EntityManagerInterface $manager)
     {
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();
@@ -48,20 +48,20 @@ class UserController extends AbstractController
      * Gestion des abonnements (follow / unfollow)
      *
      * @param User $utilisateur
-     * @param ObjectManager $manager
+     * @param EntityManagerInterface $manager
      * @param UserInterface $user
      * @return Response
      */
     #[Route('/jquery/follow/{id}', name: 'follow_this')]
-    public function follow(User $utilisateur, ObjectManager $manager, UserInterface $user) : Response
+    public function follow(User $utilisateur, EntityManagerInterface $manager, UserInterface $user) : Response
     {   
         if($user != $utilisateur) {
             if($utilisateur->isFollowByUser($user)) {
                 $idFollowed = $utilisateur->getId();
                 $idUser = $user->getId();
-                $rawSql ="DELETE FROM follow WHERE follower_id = " .$idUser. " and following_id = " .$idFollowed. "";
+                $rawSql = "DELETE FROM follow WHERE follower_id = ? AND following_id = ?";
                 $stmt = $manager->getConnection()->prepare($rawSql);
-                $stmt->execute();
+                $stmt->executeQuery([$idUser, $idFollowed]);
 
                 return $this->json([
                     'code' => 200, 
@@ -87,18 +87,19 @@ class UserController extends AbstractController
     }
 
 #[Route('/user/postUser', name: 'postUser')]
-public function postUser(User $utilisateur, UserInterface $user, ObjectManager $manager)
+public function postUser(User $utilisateur, UserInterface $user, EntityManagerInterface $manager)
  {
     $civility = $user->getCivility();
     if($civility == null){
-        return $this->redirectToRoute('civility');        
+        return $this->redirectToRoute('civility');
     }
 
-
+    // Récupération des utilisateurs suivis
+    $following = $user->getFollowing();
 
     return $this->render('default/index.html.twig', [
         'controller_name' => 'Social',
-        'followings' => $following ,
+        'followings' => $following,
     ]);
 
  }

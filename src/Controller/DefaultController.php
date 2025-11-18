@@ -16,7 +16,7 @@ use App\Form\CivilityType;
 use App\Form\ImgContentType;
 use App\Repository\ContentRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class DefaultController extends AbstractController
 {
     #[Route('/social', name: 'social')]
-    public function social(UserInterface $user, ObjectManager $manager, Request $request)
+    public function social(UserInterface $user, EntityManagerInterface $manager, Request $request)
     {   
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();
@@ -38,7 +38,6 @@ class DefaultController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // test si il y a au moins une valeur remplie (n'est pas vide)
-            dump($request);
             $image = $request->files->get('post')['my_files'];
             $text = $request->request->get('post')['text'];
             if ($image != null OR $text != null) {
@@ -95,7 +94,7 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/user/info/civilite', name: 'civility')]
-    public function civility(UserInterface $user, ObjectManager $manager, Request $request)
+    public function civility(UserInterface $user, EntityManagerInterface $manager, Request $request)
     {
         // form
         // voir si l' entité existe
@@ -132,7 +131,7 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/user/info/data', name: 'data')]
-    public function data(UserInterface $user, ObjectManager $manager, Request $request)
+    public function data(UserInterface $user, EntityManagerInterface $manager, Request $request)
     {
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();
@@ -147,7 +146,7 @@ class DefaultController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             
-            // upload PP 
+            // upload PP
             $file = $request->files->get('post')['link'];
                 $upload_directory = $this->getParameter('upload_directory_pp');
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
@@ -155,8 +154,7 @@ class DefaultController extends AbstractController
                     $upload_directory,
                     $filename
                 );
-                $data->setLink("assets/images/resources/pp/$filename")
-                    ->setContent($post);
+                $data->setLink("assets/images/resources/pp/$filename");
 
             // // upload BG
             // $file = $request->files->get('post')['bgLink'];
@@ -189,7 +187,7 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/social/reports/{type}/{id}', name: 'reports')]
-    public function reports(UserInterFace $user = null, ObjectManager $manager, Request $request)
+    public function reports(UserInterface $user = null, EntityManagerInterface $manager, Request $request)
     {
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();
@@ -200,31 +198,28 @@ class DefaultController extends AbstractController
         $id = $request->attributes->get('id');
 
         if($type == 1){
-            $contentReported = $this->getDoctrine()->getRepository(Content::class)->findBy(array('id' => $id));
+            $contentReported = $this->getDoctrine()->getRepository(Content::class)->find($id);
         }else if ($type == 2){
-            $userReported = $this->getDoctrine()->getRepository(User::class)->findBy(array('id' => $id));
+            $userReported = $this->getDoctrine()->getRepository(User::class)->find($id);
         }else{
-            $commentReported = $this->getDoctrine()->getRepository(CommentContent::class)->findBy(array('id' => $id));
+            $commentReported = $this->getDoctrine()->getRepository(CommentContent::class)->find($id);
         }
 
         $report = new Report();
         $form = $this->createForm(ReportsType::class, $report);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-        
+
             $report->setCreateAt(new \DateTime());
             if($type == 1){
-                $report->content($contentReported);
+                $report->setContent($contentReported);
             }else if ($type == 2){
-                $report->user($userReported);
+                $report->setUser($userReported);
             }else{
-                $report->comment($commentReported);
+                $report->setComment($commentReported);
             }
             if($user != null){
-                $report->reportedBy($user);
-            }
-            if($user != null){
-                $report->reportedBy($user);
+                $report->setReportedBy($user);
             }
             $manager->persist($report);
             $manager->flush();

@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AffiniteController extends AbstractController
 {
     #[Route('/rencontre', name: 'affinite')]
-    public function affinite(UserInterface $user, ObjectManager $manager, Request $reques)
+    public function affinite(UserInterface $user, EntityManagerInterface $manager, Request $request)
     {
         // Recup les activité de l'utilisateur
         $hobbies = $user->getHobbies();
@@ -37,12 +37,8 @@ class AffiniteController extends AbstractController
                         ->setMaxResults(1)->getQuery()->getSingleResult();
 
         // recup le max / min du rdm
-        foreach($idPremier as $prem) {
-            $min = $prem;
-        }
-        foreach($idDernier as $der) {
-            $max = $der;
-        }
+        $min = $idPremier['id'];
+        $max = $idDernier['id'];
         
         // créer le nb de tirage 
         $total = $max - $min;
@@ -55,16 +51,12 @@ class AffiniteController extends AbstractController
         }
 
         // boucle de tirage nb aléa et pas identique
-        // peut être modifier ligne : $rdm[$i] = $random; et $i = 0; 
         $rdm = array();
-        for ($i=0; $i < $tirage; $i++) { 
-            $random = random_int($min, $max);
-            foreach($rdm as $keyRDM) {
-                if($keyRDM == $random){
-                    $i = 0;
-                }
-            }
-            $rdm[$i] = $random;
+        for ($i=0; $i < $tirage; $i++) {
+            do {
+                $random = random_int($min, $max);
+            } while (in_array($random, $rdm));
+            $rdm[] = $random;
         }
 
         // boucle recuperant les user et testant leur affinité
@@ -76,10 +68,9 @@ class AffiniteController extends AbstractController
         $a = 0;
         foreach($rdm as $id){
             // recup l'user
-            $userSelected = $this->getDoctrine()->getRepository(User::class)->findBy(array('id' => $id));
-            // $userSelected = $this->getDoctrine()->getRepository(User::class)->findBy(array('id' => '25'));
+            $utilisateur = $this->getDoctrine()->getRepository(User::class)->find($id);
             // recup les hobbies de cet user
-            foreach($userSelected as $utilisateur){
+            if($utilisateur){
                 $hobbiesCompare = $utilisateur->getHobbies();
                 $userTested[$a] = array('user' => $utilisateur);
                 // hobbies name
@@ -101,11 +92,10 @@ class AffiniteController extends AbstractController
                     }
                 }
                 $userTested[$a] = $userTested[$a] + array('affinité' => $nbAffi);
-                
-                $a++;
 
-                // si plus de point commun, 2->3 puis 1->2 et user->1
+                $a++;
             }
+            // si plus de point commun, 2->3 puis 1->2 et user->1
         }
 
 
