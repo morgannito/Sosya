@@ -8,7 +8,7 @@ use App\Entity\Category;
 use App\Repository\HobbiesRepository;
 use App\Repository\ActivityRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CategoriesController extends AbstractController
 {
     #[Route('/rencontre/categories', name: 'categories')]
-    public function categories(ObjectManager $manager , Request $request, UserInterFace $user = null)
+    public function categories(EntityManagerInterface $manager , Request $request, UserInterface $user = null)
     {
         // user connecter alors verifier si il a config
         if($user != null) {
@@ -39,7 +39,7 @@ class CategoriesController extends AbstractController
 
 
     #[Route('/rencontre/categories/{id}', name: 'souscategories')]
-    public function souscategories($id = null ,ObjectManager $manager , Request $request, UserInterface $user = null, ActivityRepository $repo)
+    public function souscategories($id = null ,EntityManagerInterface $manager , Request $request, UserInterface $user = null, ActivityRepository $repo)
     {  
         // user connecter alors verifier si il a config
         if($user != null) {
@@ -63,19 +63,19 @@ class CategoriesController extends AbstractController
      * Permet d'avoir ou ne plus avoir l'activité
      *
      * @param Activity $activity
-     * @param ObjectManager $manager
+     * @param EntityManagerInterface $manager
      * @param UserInterface $user
      * @return Response
      */
     #[Route('/jquery/activity/{id}', name: 'activity_change')]
-    public function activity(Activity $activity, ObjectManager $manager, UserInterface $user) : Response
+    public function activity(Activity $activity, EntityManagerInterface $manager, UserInterface $user) : Response
     {
         if($activity->isHobbyByUser($user)) {
             $idAct = $activity->getId();
             $idUser = $user->getId();
-            $rawSql ="DELETE FROM hobbies WHERE user_id = " .$idUser. " and activity_id = " .$idAct. "";
+            $rawSql = "DELETE FROM hobbies WHERE user_id = ? AND activity_id = ?";
             $stmt = $manager->getConnection()->prepare($rawSql);
-            $stmt->execute();
+            $stmt->executeQuery([$idUser, $idAct]);
 
             return $this->json([
                 'code' => 200, 

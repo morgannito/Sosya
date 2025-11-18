@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Civility;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SearchbarController extends AbstractController
 {
     #[Route('/search/', name: 'search')]
-    public function search(Request $request , ObjectManager $manager, UserInterFace $user)
+    public function search(Request $request , EntityManagerInterface $manager, UserInterface $user)
     { 
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();

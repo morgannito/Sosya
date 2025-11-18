@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Content;
 use App\Entity\LikeContent;
 use App\Repository\LikeContentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,20 +17,20 @@ class PostController extends AbstractController
      * Gestion des likes (like / unlike)
      *
      * @param Content $post
-     * @param ObjectManager $manager
+     * @param EntityManagerInterface $manager
      * @param UserInterface $user
      * @param LikeContentRepository $likeRepo
      * @return Response
      */
     #[Route('/jquery/like/{id}', name: 'like_this')]
-    public function like(Content $post, LikeContentRepository $likeRepo, ObjectManager $manager, UserInterface $user) : Response
+    public function like(Content $post, LikeContentRepository $likeRepo, EntityManagerInterface $manager, UserInterface $user) : Response
     {
         if($post->isLikedByUser($user)) {
             $idLike = $post->getId();
             $idUser = $user->getId();
-            $rawSql ="DELETE FROM like_content WHERE user_id = " .$idUser. " and content_id = " .$idLike. "";
+            $rawSql = "DELETE FROM like_content WHERE user_id = ? AND content_id = ?";
             $stmt = $manager->getConnection()->prepare($rawSql);
-            $stmt->execute();
+            $stmt->executeQuery([$idUser, $idLike]);
 
             return $this->json([
                 'code' => 200, 
