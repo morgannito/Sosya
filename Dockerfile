@@ -78,6 +78,11 @@ CMD ["php-fpm"]
 # ==================================
 FROM base AS prod
 
+# Installation de nginx et supervisord
+RUN apk add --no-cache \
+    nginx \
+    supervisor
+
 # Configuration PHP pour production
 RUN { \
     echo 'opcache.enable=1'; \
@@ -108,19 +113,23 @@ COPY . .
 RUN composer dump-autoload --optimize --classmap-authoritative
 
 # Créer les répertoires nécessaires et définir les permissions
-RUN mkdir -p var/cache var/log && \
+RUN mkdir -p var/cache var/log /var/log/nginx /var/lib/nginx/tmp /run/nginx && \
     chown -R www-data:www-data var/ && \
     chmod -R 775 var/
+
+# Copier la configuration nginx
+COPY docker/nginx/production.conf /etc/nginx/http.d/default.conf
+RUN rm -f /etc/nginx/http.d/default.conf.default
+
+# Copier la configuration supervisord
+COPY docker/supervisord/supervisord.conf /etc/supervisord.conf
 
 # Copier le script d'entrée
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
-# Exposer le port PHP-FPM
-EXPOSE 9000
-
-# Utiliser l'utilisateur www-data
-USER www-data
+# Exposer le port HTTP (Render utilisera $PORT)
+EXPOSE 8080
 
 ENTRYPOINT ["docker-entrypoint"]
-CMD ["php-fpm"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
