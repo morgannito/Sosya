@@ -1,0 +1,26 @@
+
+# Configuration Docker Compose pour la production
+# Utilisation: docker compose -f compose.yaml -f compose.prod.yaml up -d
+
+services:
+  php:
+    build:
+      target: prod
+    restart: always
+    environment:
+      APP_ENV: prod
+    # En production, on ne monte pas le code en volume
+    volumes:
+      - ./var:/var/www/symfony/var:rw
+
+  nginx:
+    restart: always
+    # En production, vous devriez probablement utiliser un port différent
+    # ou un reverse proxy comme Traefik
+    ports:
+      - "80:80"
+
+  database:
+    restart: always
+    # En production, utilisez un volume nommé ou un stockage externe
+    # Ne jamais utiliser de bind mount pour les données de production
