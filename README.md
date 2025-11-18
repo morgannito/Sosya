@@ -1,5 +1,46 @@
 # SoSy
 
+## 🚀 Démarrage rapide avec Docker
+
+### Prérequis
+- Docker
+- Docker Compose
+
+### Installation et démarrage
+
+```bash
+# Démarrage automatique (recommandé)
+./start.sh
+
+# Ou manuellement avec Make
+make init
+
+# Ou avec Docker Compose
+docker compose build
+docker compose up -d
+docker compose exec php composer install
+docker compose exec php php bin/console doctrine:database:create
+docker compose exec php php bin/console doctrine:migrations:migrate
+```
+
+### Accès
+- **Application** : http://localhost:8080
+- **Interface mail** : http://localhost:8025
+
+### Commandes utiles
+```bash
+./start.sh          # Démarrer l'application
+./stop.sh           # Arrêter l'application
+make help           # Voir toutes les commandes Make
+docker compose logs -f  # Voir les logs
+```
+
+📖 **Documentation complète** : Voir [DOCKER.md](DOCKER.md)
+
+---
+
+## 📖 À propos du projet
+
 Ce projet est le fruit de mon 2 nd stage de mon BTS SIO réalisé chez krypton66.
 Il a était realisé en collaboration avec AcensJJ [https://github.com/AcensJJ] (un autre étudiant du BTS et stagiaire).
 
