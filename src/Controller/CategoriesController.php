@@ -7,6 +7,7 @@ use App\Entity\Activity;
 use App\Entity\Category;
 use App\Repository\HobbiesRepository;
 use App\Repository\ActivityRepository;
+use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CategoriesController extends AbstractController
 {
     #[Route('/rencontre/categories', name: 'categories')]
-    public function categories(EntityManagerInterface $manager , Request $request, UserInterface $user = null)
+    public function categories(EntityManagerInterface $manager, Request $request, UserInterface $user = null, CategoryRepository $categoryRepository)
     {
         // user connecter alors verifier si il a config
         if($user != null) {
@@ -28,8 +29,7 @@ class CategoriesController extends AbstractController
             }
         }
 
-        $repo = $this->getDoctrine()->getRepository(Category::class);
-        $categories = $repo->findAll();
+        $categories = $categoryRepository->findAll();
 
         return $this->render('categories/categories.html.twig', [
             'controller_name' => 'Categories',
@@ -65,32 +65,38 @@ class CategoriesController extends AbstractController
      * @param Activity $activity
      * @param EntityManagerInterface $manager
      * @param UserInterface $user
+     * @param HobbiesRepository $hobbiesRepository
      * @return Response
      */
     #[Route('/jquery/activity/{id}', name: 'activity_change')]
-    public function activity(Activity $activity, EntityManagerInterface $manager, UserInterface $user) : Response
+    public function activity(Activity $activity, EntityManagerInterface $manager, UserInterface $user, HobbiesRepository $hobbiesRepository) : Response
     {
         if($activity->isHobbyByUser($user)) {
-            $idAct = $activity->getId();
-            $idUser = $user->getId();
-            $rawSql = "DELETE FROM hobbies WHERE user_id = ? AND activity_id = ?";
-            $stmt = $manager->getConnection()->prepare($rawSql);
-            $stmt->executeQuery([$idUser, $idAct]);
+            // Utiliser Doctrine ORM au lieu de SQL brut
+            $hobby = $hobbiesRepository->findOneBy([
+                'user' => $user,
+                'activity' => $activity
+            ]);
+
+            if ($hobby) {
+                $manager->remove($hobby);
+                $manager->flush();
+            }
 
             return $this->json([
-                'code' => 200, 
+                'code' => 200,
                 'message' => 'Activité enlevée'
                 ], 200);
         }
-        
+
         $hobby = new Hobbies();
         $hobby->setActivity($activity)
               ->setUser($user);
-        
+
         $manager->persist($hobby);
         $manager->flush();
         return $this->json([
-            'code' => 200, 
+            'code' => 200,
             'message' => 'Activité ajoutée']
             , 200);
     }

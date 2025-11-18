@@ -26,28 +26,33 @@ class PostController extends AbstractController
     public function like(Content $post, LikeContentRepository $likeRepo, EntityManagerInterface $manager, UserInterface $user) : Response
     {
         if($post->isLikedByUser($user)) {
-            $idLike = $post->getId();
-            $idUser = $user->getId();
-            $rawSql = "DELETE FROM like_content WHERE user_id = ? AND content_id = ?";
-            $stmt = $manager->getConnection()->prepare($rawSql);
-            $stmt->executeQuery([$idUser, $idLike]);
+            // Utiliser Doctrine ORM au lieu de SQL brut
+            $like = $likeRepo->findOneBy([
+                'user' => $user,
+                'content' => $post
+            ]);
+
+            if ($like) {
+                $manager->remove($like);
+                $manager->flush();
+            }
 
             return $this->json([
-                'code' => 200, 
+                'code' => 200,
                 'message' => 'Vous n\'aimez plus cette publication',
                 'likes' => $likeRepo->count(['content' => $post]),
                 ], 200);
         }
-        
+
         $LikeContent = new LikeContent();
         $LikeContent->setContent($post)
               ->setUser($user)
               ->setCreateAt(new \DateTime());
-        
+
         $manager->persist($LikeContent);
         $manager->flush();
         return $this->json([
-            'code' => 200, 
+            'code' => 200,
             'message' => 'Vous aimez cette publication',
             'likes' => $likeRepo->count(['content' => $post]),
             ]

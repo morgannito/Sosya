@@ -22,7 +22,7 @@ class UserFixtures extends Fixture
         $admin = new User();
         $admin->setUsername('admin')
               ->setEmail('admin@admin.fr')
-              ->setEnabled('1')
+              ->setEnabled(true)
               ->setRoles(array('ROLE_ADMIN'));
         $password = $this->hasher->hashPassword($admin, 'admin');
         $admin->setPassword($password);
@@ -30,7 +30,7 @@ class UserFixtures extends Fixture
 
         $user = new User();
         $user->setUsername('user')
-             ->setEnabled('1')
+             ->setEnabled(true)
              ->setEmail('user@user.fr');
         $password = $this->hasher->hashPassword($user, 'user');
         $user->setPassword($password);
@@ -38,7 +38,7 @@ class UserFixtures extends Fixture
 
         $jj = new User();
         $jj->setUsername('jj')
-             ->setEnabled('1')
+             ->setEnabled(true)
              ->setEmail('jj@jj.fr')
              ->setRoles(array('ROLE_ADMIN'));
         $password = $this->hasher->hashPassword($jj, 'jjtest');
@@ -47,7 +47,7 @@ class UserFixtures extends Fixture
 
         $riu = new User();
         $riu->setUsername('riu')
-             ->setEnabled('1')
+             ->setEnabled(true)
              ->setEmail('riu@riu.fr')
              ->setRoles(array('ROLE_ADMIN'));
         $password = $this->hasher->hashPassword($riu, 'riutest');
@@ -56,7 +56,7 @@ class UserFixtures extends Fixture
 
         $antoine = new User();
         $antoine->setUsername('antoine')
-             ->setEnabled('1')
+             ->setEnabled(true)
              ->setEmail('antoine@antoine.fr')
              ->setRoles(array('ROLE_ADMIN'));
         $password = $this->hasher->hashPassword($antoine, 'antoinetest');

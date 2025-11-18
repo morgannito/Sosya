@@ -12,9 +12,12 @@ use App\Entity\Civility;
 use App\Entity\DataUser;
 use App\Form\ReportsType;
 use App\Entity\ImgContent;
+use App\Entity\CommentContent;
 use App\Form\CivilityType;
 use App\Form\ImgContentType;
 use App\Repository\ContentRepository;
+use App\Repository\UserRepository;
+use App\Repository\CommentContentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,7 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class DefaultController extends AbstractController
 {
     #[Route('/social', name: 'social')]
-    public function social(UserInterface $user, EntityManagerInterface $manager, Request $request)
+    public function social(UserInterface $user, EntityManagerInterface $manager, Request $request, ContentRepository $contentRepository)
     {   
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();
@@ -43,7 +46,7 @@ class DefaultController extends AbstractController
             if ($image != null OR $text != null) {
                 $post->setUser($user)
                     ->setCreateAt(new \DateTime())
-                    ->setEnable('1');
+                    ->setEnable(true);
                 
                 $manager->persist($post);
                 $manager->flush();
@@ -52,27 +55,35 @@ class DefaultController extends AbstractController
 
                 // upload
                 $files = $request->files->get('post')['my_files'];
-                foreach ($files as $file) {
-                    $upload_directory = $this->getParameter('upload_directory_post');
-                    $filename = md5(uniqid()) . '.' . $file->guessExtension();
-                    $file->move(
-                        $upload_directory,
-                        $filename
-                    );
-                    // associé l'image au post
-                    $images = new ImgContent(); 
-                    $images->setImg("assets/images/resources/post/$filename")
-                        ->setContent($post);
-                    $manager->persist($images);
-                    $manager->flush();
+                if ($files) {
+                    foreach ($files as $file) {
+                        if ($file) {
+                            $upload_directory = $this->getParameter('upload_directory_post');
+                            $extension = $file->guessExtension();
+                            if ($extension) {
+                                $filename = md5(uniqid()) . '.' . $extension;
+                                $file->move(
+                                    $upload_directory,
+                                    $filename
+                                );
+                                // associé l'image au post
+                                $images = new ImgContent();
+                                $images->setImg("assets/images/resources/post/$filename")
+                                    ->setContent($post);
+                                $manager->persist($images);
+                                $manager->flush();
+                            }
+                        }
+                    }
                 }
             }
             
         }
            
-        $following = $user->getFollowers();
-        $follower = $user->getFollowings();
+        $following = $user->getFollowings();
+        $follower = $user->getFollowers();
 
+        $IDtoSend = [];
         $i = 0;
         foreach ($following as $follow) {
             $IDtoSend[$i] = $follow->getFollowing();
@@ -80,8 +91,7 @@ class DefaultController extends AbstractController
         }
         $limit = 50;
 
-        $publication = $this->getDoctrine()->getRepository(Content::class)
-                ->findPublication($IDtoSend, $limit);
+        $publication = $contentRepository->findPublication($IDtoSend, $limit);
 
 
         return $this->render('default/index.html.twig', [
@@ -148,13 +158,18 @@ class DefaultController extends AbstractController
             
             // upload PP
             $file = $request->files->get('post')['link'];
+            if ($file) {
                 $upload_directory = $this->getParameter('upload_directory_pp');
-                $filename = md5(uniqid()) . '.' . $file->guessExtension();
-                $file->move(
-                    $upload_directory,
-                    $filename
-                );
-                $data->setLink("assets/images/resources/pp/$filename");
+                $extension = $file->guessExtension();
+                if ($extension) {
+                    $filename = md5(uniqid()) . '.' . $extension;
+                    $file->move(
+                        $upload_directory,
+                        $filename
+                    );
+                    $data->setLink("assets/images/resources/pp/$filename");
+                }
+            }
 
             // // upload BG
             // $file = $request->files->get('post')['bgLink'];
@@ -187,7 +202,7 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/social/reports/{type}/{id}', name: 'reports')]
-    public function reports(UserInterface $user = null, EntityManagerInterface $manager, Request $request)
+    public function reports(UserInterface $user = null, EntityManagerInterface $manager, Request $request, ContentRepository $contentRepository, UserRepository $userRepository, CommentContentRepository $commentContentRepository)
     {
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();
@@ -198,11 +213,11 @@ class DefaultController extends AbstractController
         $id = $request->attributes->get('id');
 
         if($type == 1){
-            $contentReported = $this->getDoctrine()->getRepository(Content::class)->find($id);
+            $contentReported = $contentRepository->find($id);
         }else if ($type == 2){
-            $userReported = $this->getDoctrine()->getRepository(User::class)->find($id);
+            $userReported = $userRepository->find($id);
         }else{
-            $commentReported = $this->getDoctrine()->getRepository(CommentContent::class)->find($id);
+            $commentReported = $commentContentRepository->find($id);
         }
 
         $report = new Report();
@@ -223,7 +238,7 @@ class DefaultController extends AbstractController
             }
             $manager->persist($report);
             $manager->flush();
-            $this->addFlash('success', 'L\'élément a bien était signalé');
+            $this->addFlash('success', 'L\'élément a bien été signalé');
             return $this->redirectToRoute('social');
             }
         

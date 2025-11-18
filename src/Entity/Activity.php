@@ -29,7 +29,6 @@ class Activity
 
     public function __construct()
     {
-        $this->commons = new ArrayCollection();
         $this->hobbies = new ArrayCollection();
     }
     

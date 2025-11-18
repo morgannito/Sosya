@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AffiniteController extends AbstractController
 {
     #[Route('/rencontre', name: 'affinite')]
-    public function affinite(UserInterface $user, EntityManagerInterface $manager, Request $request)
+    public function affinite(UserInterface $user, EntityManagerInterface $manager, Request $request, UserRepository $userRepository)
     {
         // Recup les activité de l'utilisateur
         $hobbies = $user->getHobbies();
@@ -25,12 +26,12 @@ class AffiniteController extends AbstractController
         }
 
         // recup le premier et le dernier utilisateur
-        $idPremier = $this->getDoctrine()->getRepository(User::class)
+        $idPremier = $userRepository
                         ->createQueryBuilder('u')
                         ->select('u.id')
                         ->orderBy('u.id', 'ASC')
                         ->setMaxResults(1)->getQuery()->getSingleResult();
-        $idDernier = $this->getDoctrine()->getRepository(User::class)
+        $idDernier = $userRepository
                         ->createQueryBuilder('u')
                         ->select('u.id')
                         ->orderBy('u.id', 'DESC')
@@ -60,15 +61,11 @@ class AffiniteController extends AbstractController
         }
 
         // boucle recuperant les user et testant leur affinité
-        // $rank = array();
-        // $un = 0;
-        // $deux = 0;
-        // $trois = 0;
         $userTested = array();
         $a = 0;
         foreach($rdm as $id){
             // recup l'user
-            $utilisateur = $this->getDoctrine()->getRepository(User::class)->find($id);
+            $utilisateur = $userRepository->find($id);
             // recup les hobbies de cet user
             if($utilisateur){
                 $hobbiesCompare = $utilisateur->getHobbies();
