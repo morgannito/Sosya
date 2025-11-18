@@ -97,7 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         // set (or unset) the owning side of the relation if necessary
         $newUser = $dataUser === null ? null : $this;
-        if ($newUser !== $dataUser->getUser()) {
+        if ($dataUser !== null && $newUser !== $dataUser->getUser()) {
             $dataUser->setUser($newUser);
         }
 
@@ -115,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         // set (or unset) the owning side of the relation if necessary
         $newUser = $civility === null ? null : $this;
-        if ($newUser !== $civility->getUser()) {
+        if ($civility !== null && $newUser !== $civility->getUser()) {
             $civility->setUser($newUser);
         }
 

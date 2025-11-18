@@ -19,7 +19,7 @@ class LikeContent
     private $user;
 
     #[ORM\Column(type: "datetime")]
-    private $CreateAt;
+    private $createAt;
 
     public function getId(): ?int
     {
@@ -56,12 +56,12 @@ class LikeContent
 
     public function getCreateAt(): ?\DateTimeInterface
     {
-        return $this->CreateAt;
+        return $this->createAt;
     }
 
-    public function setCreateAt(\DateTimeInterface $CreateAt): self
+    public function setCreateAt(\DateTimeInterface $createAt): self
     {
-        $this->CreateAt = $CreateAt;
+        $this->createAt = $createAt;
 
         return $this;
     }

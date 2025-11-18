@@ -32,7 +32,7 @@
                         
                         {% if app.user is not null %}
                             {% if "ROLE_ADMIN" in app.user.roles %}
-                                <li><a href="/admin">Administration</a></li>
+                                <li><a href="{{ path('admin') }}">Administration</a></li>
                             {% endif %}
                         {% endif %}
                         {# <li><a href="#" data-toggle="modal" data-target="#exampleModal">Publier</a></li> #}
@@ -66,7 +66,7 @@
                         {% if app.user is not null %}
                             {% if "ROLE_ADMIN" in app.user.roles %}
                                 <li>
-                                    <a href="/admin">
+                                    <a href="{{ path('admin') }}">
                                         <h3>Administration</h3>
                                         <p>Gestion du site</p>
                                     </a>
@@ -80,8 +80,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ path('civility') }}">
-                                <h3>Catégorie</h3>
+                            <a href="{{ path('categories') }}">
+                                <h3>Catégories</h3>
                                 <p>Voir les différents loisirs</p>
                             </a>
                         </li>
@@ -115,27 +115,21 @@
                     </ul>
                 </section>
             </section>
-            <body>
-                {% block body %}{% endblock %}
-            </body>
 
+            {% block body %}{% endblock %}
 
+        </div>
+        <!-- End Wrapper -->
 
-            <!-- Button trigger modal -->
+        {# Scripts - jQuery loaded only once #}
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="{{ asset('assets/nav/js/browser.min.js') }}"></script>
+        <script src="{{ asset('assets/nav/js/breakpoints.min.js') }}"></script>
+        <script src="{{ asset('assets/nav/js/util.js') }}"></script>
+        <script src="{{ asset('assets/nav/js/main.js') }}"></script>
 
-
-           
-            {# template #}
-            <script src="{{ asset('assets/nav/js/jquery.min.js') }}"></script>
-            <script src="{{ asset('assets/nav/js/browser.min.js') }}"></script>
-            <script src="{{ asset('assets/nav/js/breakpoints.min.js') }}"></script>
-            <script src="{{ asset('assets/nav/js/util.js') }}"></script>
-            <script src="{{ asset('assets/nav/js/main.js') }}"></script>
-            <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-
-            {% block javascripts %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
 </html>

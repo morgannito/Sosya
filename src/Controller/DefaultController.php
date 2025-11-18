@@ -16,6 +16,8 @@ use App\Entity\CommentContent;
 use App\Form\CivilityType;
 use App\Form\ImgContentType;
 use App\Repository\ContentRepository;
+use App\Repository\UserRepository;
+use App\Repository\CommentContentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,7 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class DefaultController extends AbstractController
 {
     #[Route('/social', name: 'social')]
-    public function social(UserInterface $user, EntityManagerInterface $manager, Request $request)
+    public function social(UserInterface $user, EntityManagerInterface $manager, Request $request, ContentRepository $contentRepository)
     {   
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();
@@ -89,8 +91,7 @@ class DefaultController extends AbstractController
         }
         $limit = 50;
 
-        $publication = $this->getDoctrine()->getRepository(Content::class)
-                ->findPublication($IDtoSend, $limit);
+        $publication = $contentRepository->findPublication($IDtoSend, $limit);
 
 
         return $this->render('default/index.html.twig', [
@@ -201,7 +202,7 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/social/reports/{type}/{id}', name: 'reports')]
-    public function reports(UserInterface $user = null, EntityManagerInterface $manager, Request $request)
+    public function reports(UserInterface $user = null, EntityManagerInterface $manager, Request $request, ContentRepository $contentRepository, UserRepository $userRepository, CommentContentRepository $commentContentRepository)
     {
         // Test si la civilité est config - Add in all controller fnct
         $civility = $user->getCivility();
@@ -212,11 +213,11 @@ class DefaultController extends AbstractController
         $id = $request->attributes->get('id');
 
         if($type == 1){
-            $contentReported = $this->getDoctrine()->getRepository(Content::class)->find($id);
+            $contentReported = $contentRepository->find($id);
         }else if ($type == 2){
-            $userReported = $this->getDoctrine()->getRepository(User::class)->find($id);
+            $userReported = $userRepository->find($id);
         }else{
-            $commentReported = $this->getDoctrine()->getRepository(CommentContent::class)->find($id);
+            $commentReported = $commentContentRepository->find($id);
         }
 
         $report = new Report();
@@ -237,7 +238,7 @@ class DefaultController extends AbstractController
             }
             $manager->persist($report);
             $manager->flush();
-            $this->addFlash('success', 'L\'élément a bien était signalé');
+            $this->addFlash('success', 'L\'élément a bien été signalé');
             return $this->redirectToRoute('social');
             }
         
