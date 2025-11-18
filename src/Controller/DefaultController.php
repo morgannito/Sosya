@@ -12,6 +12,7 @@ use App\Entity\Civility;
 use App\Entity\DataUser;
 use App\Form\ReportsType;
 use App\Entity\ImgContent;
+use App\Entity\CommentContent;
 use App\Form\CivilityType;
 use App\Form\ImgContentType;
 use App\Repository\ContentRepository;
@@ -43,7 +44,7 @@ class DefaultController extends AbstractController
             if ($image != null OR $text != null) {
                 $post->setUser($user)
                     ->setCreateAt(new \DateTime())
-                    ->setEnable('1');
+                    ->setEnable(true);
                 
                 $manager->persist($post);
                 $manager->flush();
@@ -52,27 +53,35 @@ class DefaultController extends AbstractController
 
                 // upload
                 $files = $request->files->get('post')['my_files'];
-                foreach ($files as $file) {
-                    $upload_directory = $this->getParameter('upload_directory_post');
-                    $filename = md5(uniqid()) . '.' . $file->guessExtension();
-                    $file->move(
-                        $upload_directory,
-                        $filename
-                    );
-                    // associé l'image au post
-                    $images = new ImgContent(); 
-                    $images->setImg("assets/images/resources/post/$filename")
-                        ->setContent($post);
-                    $manager->persist($images);
-                    $manager->flush();
+                if ($files) {
+                    foreach ($files as $file) {
+                        if ($file) {
+                            $upload_directory = $this->getParameter('upload_directory_post');
+                            $extension = $file->guessExtension();
+                            if ($extension) {
+                                $filename = md5(uniqid()) . '.' . $extension;
+                                $file->move(
+                                    $upload_directory,
+                                    $filename
+                                );
+                                // associé l'image au post
+                                $images = new ImgContent();
+                                $images->setImg("assets/images/resources/post/$filename")
+                                    ->setContent($post);
+                                $manager->persist($images);
+                                $manager->flush();
+                            }
+                        }
+                    }
                 }
             }
             
         }
            
-        $following = $user->getFollowers();
-        $follower = $user->getFollowings();
+        $following = $user->getFollowings();
+        $follower = $user->getFollowers();
 
+        $IDtoSend = [];
         $i = 0;
         foreach ($following as $follow) {
             $IDtoSend[$i] = $follow->getFollowing();
@@ -148,13 +157,18 @@ class DefaultController extends AbstractController
             
             // upload PP
             $file = $request->files->get('post')['link'];
+            if ($file) {
                 $upload_directory = $this->getParameter('upload_directory_pp');
-                $filename = md5(uniqid()) . '.' . $file->guessExtension();
-                $file->move(
-                    $upload_directory,
-                    $filename
-                );
-                $data->setLink("assets/images/resources/pp/$filename");
+                $extension = $file->guessExtension();
+                if ($extension) {
+                    $filename = md5(uniqid()) . '.' . $extension;
+                    $file->move(
+                        $upload_directory,
+                        $filename
+                    );
+                    $data->setLink("assets/images/resources/pp/$filename");
+                }
+            }
 
             // // upload BG
             // $file = $request->files->get('post')['bgLink'];

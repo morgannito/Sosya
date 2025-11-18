@@ -1,4 +1,4 @@
-{% extends 'base.html.Twig' %}
+{% extends 'base.html.twig' %}
 
 {% block stylesheets_before %}
 	<link rel="stylesheet" href="{{ asset('assets/identity/css/main.css') }}" />
@@ -76,7 +76,7 @@
     <section id="main">
         <header>
             <span class="avatar">
-                <img style="height 122px; witdh: 122px;" src="{{ asset(utilisateur.dataUser.link) }}" alt="" />
+                <img style="height: 122px; width: 122px;" src="{{ asset(utilisateur.dataUser.link) }}" alt="" />
             </span>
             <h1>{{utilisateur.civility.name}} {{utilisateur.civility.firstName}}</h1>
             <p>{{utilisateur.civility.description}}</p>
